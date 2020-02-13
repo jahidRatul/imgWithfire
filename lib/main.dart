@@ -25,7 +25,23 @@ class _MyHomePageState extends State<MyHomePage> {
   File sampleImage;
 
   Future getImage() async {
-    var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    final imageSource = await showDialog<ImageSource>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Select the image source"),
+        actions: <Widget>[
+          MaterialButton(
+            child: Text("Camera"),
+            onPressed: () => Navigator.pop(context, ImageSource.camera),
+          ),
+          MaterialButton(
+            child: Text("Gallery"),
+            onPressed: () => Navigator.pop(context, ImageSource.gallery),
+          )
+        ],
+      ),
+    );
+    var tempImage = await ImagePicker.pickImage(source: imageSource);
 
     setState(() {
       sampleImage = tempImage;
